@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Housing Disrepair Support Line</title>
+
+  <style>
+    :root{
+      --navy:#162447;
+      --navy2:#1b2a57;
+      --orange:#ff7a32;
+      --bg:#f6f7fb;
+      --text:#1f2a44;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --shadow:0 10px 25px rgba(0,0,0,.10);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    /* Header */
+    header{
+      background:#fff;
+      padding:14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      box-shadow:0 2px 10px rgba(0,0,0,.08);
+      position:sticky;
+      top:0;
+      z-index:1000;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:800;
+      font-size:18px;
+      color:var(--navy);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:82vw;
+    }
+    .brand img{
+      height:38px;width:38px;border-radius:50%;
+      object-fit:cover;
+      flex:0 0 auto;
+    }
+
+    /* Mobile menu */
+    .menu-btn{
+      background:transparent;border:0;cursor:pointer;
+      width:44px;height:44px;border-radius:12px;
+      display:grid;place-items:center;
+    }
+    .menu-btn:active{background:#f1f5f9}
+    .menu-icon{width:22px;height:16px;position:relative}
+    .menu-icon span{
+      position:absolute;left:0;right:0;height:2px;background:var(--navy);
+      border-radius:10px;
+    }
+    .menu-icon span:nth-child(1){top:0}
+    .menu-icon span:nth-child(2){top:7px}
+    .menu-icon span:nth-child(3){top:14px}
+
+    .drawer{
+      position:fixed;inset:0;
+      background:rgba(0,0,0,.35);
+      display:none;
+      z-index:1200;
+    }
+    .drawer.open{display:block}
+    .drawer-panel{
+      position:absolute;top:0;right:0;height:100%;
+      width:min(320px,86vw);
+      background:#fff;
+      padding:18px;
+      box-shadow:-10px 0 30px rgba(0,0,0,.2);
+    }
+    .drawer-panel h3{
+      margin:6px 0 12px;
+      color:var(--navy);
+    }
+    .drawer-panel a{
+      display:block;
+      padding:12px 10px;
+      border-radius:12px;
+      text-decoration:none;
+      color:var(--navy);
+      font-weight:700;
+    }
+    .drawer-panel a:hover{background:#f1f5f9}
+    .drawer-close{
+      display:flex;justify-content:flex-end;
+    }
+    .drawer-close button{
+      border:0;background:#f1f5f9;cursor:pointer;
+      width:44px;height:44px;border-radius:14px;
+      font-weight:900;
+    }
+
+    /* Sections */
+    section{padding:56px 18px}
+    .wrap{max-width:1050px;margin:0 auto}
+
+    /* HERO */
+    .hero{
+      padding:70px 18px 80px;
+      color:#fff;
+      text-align:center;
+      background:
+        linear-gradient(rgba(22,36,71,.92),rgba(22,36,71,.92)),
+        url("hero.jpg") center/cover no-repeat;
+    }
+    .hero .wrap{max-width:900px}
+    .hero .lead{
+      text-transform:uppercase;
+      letter-spacing:1.6px;
+      font-size:13px;
+      opacity:.85;
+      margin:0 0 14px;
+    }
+    .hero h1{
+      font-size:34px;
+      line-height:1.18;
+      margin:0 0 22px;
+      font-weight:900;
+    }
+    .hero .desc{
+      font-size:16px;
+      line-height:1.65;
+      margin:0 auto 28px;
+      max-width:780px;
+      opacity:.95;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      background:var(--orange);
+      color:#fff;
+      text-decoration:none;
+      padding:16px 34px;
+      border-radius:28px;
+      font-weight:900;
+      font-size:16px;
+      box-shadow:0 12px 25px rgba(255,122,50,.25);
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn.secondary{
+      background:#fff;color:var(--navy);
+      box-shadow:0 12px 25px rgba(0,0,0,.12);
+    }
+
+    /* Cards */
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:22px;
+    }
+    .title{
+      font-size:36px;
+      line-height:1.05;
+      margin:0 0 14px;
+      color:var(--navy);
+      font-weight:900;
+    }
+    .sub{
+      color:var(--muted);
+      line-height:1.65;
+      margin:0 0 18px;
+      font-size:16px;
+    }
+
+    /* Icon list (navy squares) */
+    .iconlist{display:grid;gap:16px;margin-top:20px}
+    .item{
+      display:grid;
+      grid-template-columns:56px 1fr;
+      gap:16px;
+      align-items:flex-start;
+    }
+    .iconbox{
+      width:56px;height:56px;border-radius:14px;
+      background:var(--navy2);
+      display:grid;place-items:center;
+    }
+    .item h4{
+      margin:0 0 5px;
+      color:var(--navy);
+      font-size:20px;
+      font-weight:900;
+    }
+    .item p{
+      margin:0;color:var(--muted);
+      line-height:1.55;
+    }
+
+    /* Example image card */
+    .imgcard{
+      overflow:hidden;
+      padding:0;
+    }
+    .imgcard img{
+      width:100%;
+      display:block;
+      height:auto;
+    }
+    .imgcard .body{
+      padding:22px;
+    }
+    .imgcard h3{
+      margin:0 0 10px;
+      font-size:26px;
+      color:var(--navy);
+      font-weight:900;
+    }
+    .center-note{
+      text-align:center;
+      color:#4b5563;
+      font-size:18px;
+      margin:34px 0 18px;
+    }
+    .center{display:flex;justify-content:center}
+
+    /* Orange squares feature cards */
+    .band{
+      background:var(--navy);
+      padding:56px 18px;
+      color:#fff;
+    }
+    .grid{
+      display:grid;
+      gap:18px;
+    }
+    @media (min-width:820px){
+      .grid{grid-template-columns:repeat(3,1fr)}
+    }
+    .feature{
+      background:#fff;
+      color:var(--text);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      padding:22px;
+      text-align:center;
+      min-height:210px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      gap:14px;
+    }
+    .sq{
+      width:80px;height:80px;border-radius:18px;
+      background:var(--orange);
+      display:grid;place-items:center;
+      flex:0 0 auto;
+    }
+    .feature h3{
+      margin:0;
+      font-size:22px;
+      color:var(--navy);
+      font-weight:900;
+    }
+    .feature p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      max-width:320px;
+    }
+    .feature a.link{
+      margin-top:auto;
+      display:inline-block;
+      text-decoration:none;
+      font-weight:900;
+      color:var(--orange);
+    }
+
+    /* Eligibility circles */
+    .eligibility{
+      text-align:center;
+    }
+    .eligibility .lead2{
+      font-style:italic;
+      color:#334155;
+      margin:0 0 22px;
+      font-size:20px;
+      line-height:1.4;
+    }
+    .circles{
+      display:grid;
+      gap:22px;
+      justify-content:center;
+      margin-top:26px;
+    }
+    .circle{
+      width:min(520px,92vw);
+      aspect-ratio:1/1;
+      border-radius:50%;
+      background:var(--navy2);
+      box-shadow:var(--shadow);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:42px;
+      color:#fff;
+      font-size:20px;
+      line-height:1.55;
+    }
+
+    /* Testimonials */
+    .testi-head{
+      text-align:center;
+      margin-bottom:18px;
+    }
+    .testi-head h2{
+      margin:0 0 10px;
+      color:var(--navy);
+      font-size:38px;
+      font-weight:900;
+    }
+    .testi-head p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:17px;
+    }
+    .stars{
+      display:flex;
+      gap:6px;
+      margin-bottom:10px;
+    }
+    .tgrid{display:grid;gap:18px}
+    @media (min-width:900px){
+      .tgrid{grid-template-columns:repeat(3,1fr)}
+    }
+    .quote{
+      font-size:18px;
+      color:#374151;
+      line-height:1.7;
+      font-style:italic;
+      margin:8px 0 18px;
+    }
+    .line{height:1px;background:#e5e7eb;margin:14px 0}
+    .who{
+      font-weight:900;color:var(--navy);font-size:20px;margin:0;
+    }
+    .meta{margin:4px 0 0;color:#6b7280}
+    .loc{color:var(--orange);font-weight:900;margin-top:2px}
+
+    /* Form */
+    .form-card{max-width:760px;margin:0 auto}
+    form{display:grid;gap:14px}
+    label{font-weight:900;color:var(--navy)}
+    input,select,textarea{
+      width:100%;
+      padding:14px 14px;
+      border-radius:12px;
+      border:1px solid #d1d5db;
+      font-size:16px;
+      outline:none;
+      background:#fff;
+    }
+    textarea{min-height:130px;resize:vertical}
+    .submit{
+      border:0;
+      cursor:pointer;
+      background:var(--orange);
+      color:#fff;
+      font-weight:900;
+      font-size:18px;
+      padding:16px 18px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+    }
+
+    /* Contact info */
+    .contact-grid{
+      display:grid;
+      gap:18px;
+      max-width:760px;
+      margin:0 auto;
+    }
+    .contact-row{
+      display:grid;
+      grid-template-columns:72px 1fr;
+      gap:16px;
+      align-items:center;
+    }
+    .cicon{
+      width:64px;height:64px;border-radius:14px;
+      background:var(--orange);
+      display:grid;place-items:center;
+    }
+    .contact-row h4{margin:0;color:var(--navy);font-size:22px;font-weight:900}
+    .contact-row p{margin:6px 0 0;color:#4b5563;font-size:18px}
+    .contact-row a{color:inherit;text-decoration:none}
+    .contact-row a:hover{text-decoration:underline}
+
+    /* Footer */
+    footer{
+      background:var(--navy);
+      color:#fff;
+      padding:54px 18px;
+    }
+    footer .wrap{max-width:1050px}
+    footer h3{
+      margin:0 0 12px;
+      font-size:30px;
+      font-weight:900;
+    }
+    footer p, footer a{
+      color:#e5e7eb;
+      line-height:1.7;
+      text-decoration:none;
+    }
+    footer a:hover{text-decoration:underline}
+    .footgrid{
+      display:grid;
+      gap:28px;
+    }
+    @media (min-width:900px){
+      .footgrid{grid-template-columns:2fr 1fr 1fr}
+    }
+
+    /* Simple SVG */
+    svg{display:block}
+
+    /* Floating WhatsApp */
+    .wa-float{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      z-index:1400;
+      width:58px;height:58px;
+      border-radius:50%;
+      background:var(--orange);
+      display:grid;place-items:center;
+      box-shadow:0 18px 30px rgba(0,0,0,.18);
+      text-decoration:none;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">
+    <!-- Replace this file with your exact logo image -->
+    <img src="logo.png" alt="Housing Disrepair Support Line Logo">
+    Housing Disrepair Support Line
+  </div>
+
+  <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+    <div class="menu-icon">
+      <span></span><span></span><span></span>
+    </div>
+  </button>
+</header>
+
+<!-- Drawer menu -->
+<div class="drawer" id="drawer">
+  <div class="drawer-panel">
+    <div class="drawer-close">
+      <button id="closeDrawer" aria-label="Close menu">✕</button>
+    </div>
+    <h3>Quick Links</h3>
+    <a href="#home">Home</a>
+    <a href="#types">Types of Disrepair</a>
+    <a href="#eligibility">Check Eligibility</a>
+    <a href="#testimonials">Testimonials</a>
+    <a href="#claim">Start Your Claim</a>
+    <a href="#contact">Contact</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="wrap">
+    <p class="lead">Housing Disrepair Support Line</p>
+
+    <h1>Housing Disrepair Claims: Get the Repairs &amp; Compensation You Deserve</h1>
+
+    <p class="desc">
+      If you are living in a council or housing association property that has fallen into poor condition,
+      Housing Disrepair Support Line is here to help. Many tenants report issues repeatedly, only to be ignored
+      or left waiting for months with leaks, mould, damp, heating problems, or dangerous structural defects.
+      <br><br>
+      You do not need to continue living in an unsafe or unhealthy home. You may be entitled to repairs,
+      compensation, or both — and we make the process simple.
+    </p>
+
+    <a class="btn" href="#claim">Report Now</a>
+  </div>
+</section>
+
+<!-- WHAT COUNTS -->
+<section id="types">
+  <div class="wrap">
+    <h2 class="title">What Counts as Housing Disrepair?</h2>
+    <p class="sub">
+      Housing disrepair covers any serious issue that affects the safety, comfort, or health of your household.
+      Common issues include:
+    </p>
+
+    <div class="iconlist">
+      <div class="item">
+        <div class="iconbox" aria-hidden="true">
+          <!-- droplet -->
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2s6 7 6 12a6 6 0 1 1-12 0c0-5 6-12 6-12Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h4>Leaks and Water Damage</h4>
+          <p>Including roof leaks, burst pipes, and faulty guttering</p>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="iconbox" aria-hidden="true">
+          <!-- cloud -->
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <path d="M7 18h10a4 4 0 0 0 0-8 6 6 0 0 0-11-1A4 4 0 0 0 7 18Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h4>Mould and Damp</h4>
+          <p>Which can cause respiratory problems and long-term damage to your home</p>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="iconbox" aria-hidden="true">
+          <!-- lightning -->
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M13 2 3 14h7l-1 8 12-14h-7l-1-6Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h4>Electrical Faults</h4>
+          <p>Unsafe wiring, or heating systems that do not work properly</p>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="iconbox" aria-hidden="true">
+          <!-- home -->
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+            <path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V10.5Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h4>Structural Problems</h4>
+          <p>Such as cracked walls, unstable floors, or broken windows and doors</p>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="iconbox" aria-hidden="true">
+          <!-- bug -->
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+            <path d="M9 7a3 3 0 0 1 6 0v2H9V7Z" stroke="#fff" stroke-width="2"/>
+            <path d="M8 11h8v4a4 4 0 0 1-8 0v-4Z" stroke="#fff" stroke-width="2"/>
+            <path d="M5 13H3M21 13h-2M7 20l-1 2M17 20l1 2M7 4 5 2M17 4l2-2" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <h4>Infestations</h4>
+          <p>Including rodents or insects caused by property defects</p>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="iconbox" aria-hidden="true">
+          <!-- thermometer -->
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M14 14.76V5a2 2 0 0 0-4 0v9.76a4 4 0 1 0 4 0Z" stroke="#fff" stroke-width="2"/>
+          </svg>
+        </div>
+        <div>
+          <h4>Heating Issues</h4>
+          <p>Broken boilers, radiators, or heating systems</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:26px"></div>
+
+    <!-- Example image card (replace mould.jpg with your exact image) -->
+    <div class="card imgcard">
+      <img src="mould.jpg" alt="Severe Water Damage & Mould example">
+      <div class="body">
+        <h3>Severe Water Damage &amp; Mould</h3>
+        <p class="sub">Ceiling damage with extensive mould growth and moisture readings showing unsafe conditions</p>
+      </div>
+    </div>
+
+    <p class="center-note">Experiencing similar issues? Don't wait for conditions to worsen.</p>
+
+    <div class="center">
+      <a class="btn" href="#claim">Arrange your Inspection Today</a>
+    </div>
+  </div>
+</section>
+
+<!-- ORANGE SQUARES (FEATURES) -->
+<section class="band" aria-label="Benefits">
+  <div class="wrap">
+    <div class="grid">
+
+      <div class="feature">
+        <div class="sq" aria-hidden="true">
+          <!-- clipboard -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <path d="M9 3h6v3H9V3Z" stroke="#fff" stroke-width="2"/>
+            <path d="M7 6h10v15H7V6Z" stroke="#fff" stroke-width="2"/>
+            <path d="M9 10h6M9 14h6M9 18h5" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Free Initial Assessment</h3>
+        <p>Check your eligibility at no cost</p>
+      </div>
+
+      <div class="feature">
+        <div class="sq" aria-hidden="true">
+          <!-- shield -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2 20 6v6c0 6-4 10-8 10S4 18 4 12V6l8-4Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M9 12l2 2 4-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>No Win, No Fee</h3>
+        <p>We will only deduct our percentage from your successful payout</p>
+      </div>
+
+      <div class="feature">
+        <div class="sq" aria-hidden="true">
+          <!-- clock -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <path d="M12 22a10 10 0 1 0-10-10 10 10 0 0 0 10 10Z" stroke="#fff" stroke-width="2"/>
+            <path d="M12 6v6l4 2" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Fast Processing</h3>
+        <p>We aim to get your claim moving quickly</p>
+      </div>
+
+      <div class="feature">
+        <div class="sq" aria-hidden="true">
+          <!-- whatsapp bubble -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <path d="M20 11a8 8 0 0 1-12.7 6.4L4 18l.7-3.1A8 8 0 1 1 20 11Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M9 10c1 3 3 5 6 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>WhatsApp Support</h3>
+        <p>Quicker image share and instant claims procession</p>
+        <a class="link" href="https://wa.me/447949489006?text=Hi%20Housing%20Disrepair%20Support%20Line%2C%20I%20need%20help%20with%20my%20housing%20disrepair." target="_blank" rel="noopener">Chat on WhatsApp</a>
+      </div>
+
+      <div class="feature">
+        <div class="sq" aria-hidden="true">
+          <!-- headset -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <path d="M4 12a8 8 0 0 1 16 0" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+            <path d="M4 12v4a2 2 0 0 0 2 2h1v-6H6a2 2 0 0 0-2 2Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M20 12v4a2 2 0 0 1-2 2h-1v-6h1a2 2 0 0 1 2 2Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Dedicated Support</h3>
+        <p>Guidance from start to finish, ensuring repairs are completed and compensation is secured</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ELIGIBILITY (BLUE CIRCLES) -->
+<section id="eligibility" class="eligibility">
+  <div class="wrap">
+    <h2 class="title" style="text-align:center">Are You Eligible?</h2>
+    <p class="lead2">Even if you're unsure, we can check your eligibility in minutes.</p>
+
+    <div class="circles">
+      <div class="circle">You rent from a council or housing association</div>
+      <div class="circle">You've reported the problem, but it remains unresolved</div>
+      <div class="circle">You are still living in the property</div>
+      <div class="circle">The issues have affected your health, safety, quality of life, or caused damage to belongings</div>
+    </div>
+
+    <div style="height:26px"></div>
+
+    <div class="card" style="text-align:center;max-width:760px;margin:0 auto">
+      <h3 style="margin:6px 0 10px;color:var(--navy);font-size:34px;font-weight:900">Take the First Step Today</h3>
+      <p class="sub" style="max-width:640px;margin:0 auto 18px">
+        You don't need to suffer in silence or wait endlessly for your landlord to act.
+        Housing Disrepair Support Line is committed to helping tenants live safely and comfortably.
+        <br><br>
+        <strong style="color:var(--navy)">Start your free assessment now and take back control of your home.</strong>
+      </p>
+      <a class="btn" href="#claim">Assess Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="wrap">
+    <div class="testi-head">
+      <h2>What Our Clients Say</h2>
+      <p>Real stories from tenants we've helped get the repairs and compensation they deserve</p>
+    </div>
+
+    <div class="tgrid">
+
+      <!-- 1) Shapla -->
+      <div class="card">
+        <div class="stars" aria-hidden="true">
+          <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+        </div>
+        <p class="quote">
+          "I had been living with damp and mould for over a year. Housing Disrepair Support Line helped me get the repairs done and compensation within 3 months. Highly recommend their service."
+        </p>
+        <div class="line"></div>
+        <p class="who">Shapla Begum</p>
+        <p class="meta">Council Tenant</p>
+        <p class="loc">London</p>
+      </div>
+
+      <!-- 2) Omar -->
+      <div class="card">
+        <div class="stars" aria-hidden="true">
+          <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+        </div>
+        <p class="quote">
+          "After months of my landlord ignoring my heating complaints, they got it fixed in weeks and secured £7,500 compensation. Professional and supportive throughout."
+        </p>
+        <div class="line"></div>
+        <p class="who">Omar Alhaji</p>
+        <p class="meta">Housing Association Tenant</p>
+        <p class="loc">Manchester</p>
+      </div>
+
+      <!-- 3) Patricia -->
+      <div class="card">
+        <div class="stars" aria-hidden="true">
+          <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+        </div>
+        <p class="quote">
+          "The team handled my structural damage claim perfectly. No win, no fee meant no risk, and I received £9,200 in compensation. Thank you!"
+        </p>
+        <div class="line"></div>
+        <p class="who">Patricia Williams</p>
+        <p class="meta">Council Tenant</p>
+        <p class="loc">Birmingham</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- START YOUR CLAIM (FORM) -->
+<section id="claim">
+  <div class="wrap">
+    <div class="card form-card">
+      <h2 class="title" style="text-align:center;margin-bottom:10px">Start Your Claim</h2>
+      <p class="sub" style="text-align:center;margin-top:0">
+        Fill in the form below and we’ll get back to you as soon as possible.
+      </p>
+
+      <!-- NETLIFY FORMS: works when deployed to Netlify -->
+      <form name="claim" method="POST" data-netlify="true">
+        <input type="hidden" name="form-name" value="claim">
+
+        <div>
+          <label for="tenantType">Tenant Type *</label>
+          <select id="tenantType" name="tenantType" required>
+            <option value="" selected disabled>Select tenant type</option>
+            <option>Council Tenant</option>
+            <option>Housing Association Tenant</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="fullName">Full Name *</label>
+          <input id="fullName" name="fullName" placeholder="John Doe" required />
+        </div>
+
+        <div>
+          <label for="email">Email Address *</label>
+          <input id="email" name="email" type="email" placeholder="john@example.com" required />
+        </div>
+
+        <div>
+          <label for="phone">Phone Number *</label>
+          <input id="phone" name="phone" placeholder="020 1234 5678" required />
+        </div>
+
+        <div>
+          <label for="disrepairType">Type of Disrepair *</label>
+          <select id="disrepairType" name="disrepairType" required>
+            <option value="" selected disabled>Select type</option>
+            <option>Leaks and Water Damage</option>
+            <option>Mould and Damp</option>
+            <option>Electrical Faults</option>
+            <option>Structural Problems</option>
+            <option>Infestations</option>
+            <option>Heating Issues</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="reported">Have you reported this to your landlord? *</label>
+          <select id="reported" name="reported" required>
+            <option value="" selected disabled>Select option</option>
+            <option>Yes</option>
+            <option>No</option>
+            <option>Not sure</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="details">Additional Details</label>
+          <textarea id="details" name="details" placeholder="Please describe the issue and how long you've been experiencing it..."></textarea>
+        </div>
+
+        <button class="submit" type="submit">
+          Submit Claim
+          <span aria-hidden="true">✈️</span>
+        </button>
+      </form>
+
+      <p style="margin:14px 0 0;color:#6b7280;line-height:1.6;font-size:14px;text-align:center">
+        When live on Netlify, submissions can be emailed to <strong>info@hdrsupportline.co.uk</strong> via Netlify Form notifications.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT INFORMATION -->
+<section id="contact">
+  <div class="wrap">
+    <div class="card" style="max-width:760px;margin:0 auto">
+      <h2 class="title" style="margin-top:0">Contact Information</h2>
+
+      <div class="contact-grid">
+        <div class="contact-row">
+          <div class="cicon" aria-hidden="true">
+            <!-- mail -->
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+              <path d="M4 6h16v12H4V6Z" stroke="#fff" stroke-width="2"/>
+              <path d="m4 7 8 6 8-6" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <h4>Email Us</h4>
+            <p><a href="mailto:info@hdrsupportline.co.uk">info@hdrsupportline.co.uk</a></p>
+          </div>
+        </div>
+
+        <div class="contact-row">
+          <div class="cicon" aria-hidden="true">
+            <!-- phone -->
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+              <path d="M6 3h4l2 5-3 2c1 3 3 5 6 6l2-3 5 2v4c0 1-1 2-2 2C10 21 3 14 3 5c0-1 1-2 3-2Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <h4>Call Us</h4>
+            <p><a href="tel:+442038833227">020 3883 3227</a></p>
+          </div>
+        </div>
+
+        <div class="contact-row">
+          <div class="cicon" aria-hidden="true">
+            <!-- whatsapp -->
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+              <path d="M20 11a8 8 0 0 1-12.7 6.4L4 18l.7-3.1A8 8 0 1 1 20 11Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M9 10c1 3 3 5 6 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <h4>WhatsApp</h4>
+            <p>
+              <a href="https://wa.me/447949489006?text=Hi%20Housing%20Disrepair%20Support%20Line%2C%20I%20need%20help%20with%20my%20housing%20disrepair."
+                 target="_blank" rel="noopener">+44 7949 489006</a>
+            </p>
+          </div>
+        </div>
+
+        <div class="contact-row">
+          <div class="cicon" aria-hidden="true">
+            <!-- globe -->
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+              <path d="M12 22a10 10 0 1 0-10-10 10 10 0 0 0 10 10Z" stroke="#fff" stroke-width="2"/>
+              <path d="M2 12h20" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+              <path d="M12 2c3 3 3 17 0 20-3-3-3-17 0-20Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <h4>Website</h4>
+            <p><a href="https://www.hdrsupportline.co.uk" target="_blank" rel="noopener">www.hdrsupportline.co.uk</a></p>
+          </div>
+        </div>
+
+        <div class="contact-row">
+          <div class="cicon" aria-hidden="true">
+            <!-- pin -->
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+              <path d="M12 22s7-6 7-12a7 7 0 0 0-14 0c0 6 7 12 7 12Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M12 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" stroke="#fff" stroke-width="2"/>
+            </svg>
+          </div>
+          <div>
+            <h4>Visit Us</h4>
+            <p>187 York Way, London N7 9AT</p>
+          </div>
+        </div>
+
+        <div class="contact-row">
+          <div class="cicon" aria-hidden="true">
+            <!-- clock -->
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+              <path d="M12 22a10 10 0 1 0-10-10 10 10 0 0 0 10 10Z" stroke="#fff" stroke-width="2"/>
+              <path d="M12 6v6l4 2" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <h4>Business Hours</h4>
+            <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footgrid">
+      <div>
+        <h3>Housing Disrepair Support Line</h3>
+        <p>
+          Helping tenants get the repairs and compensation they deserve. Specialist support for housing disrepair claims across the UK.
+        </p>
+      </div>
+
+      <div>
+        <h3 style="font-size:22px">Quick Links</h3>
+        <p><a href="#home">Home</a></p>
+        <p><a href="#types">Types of Disrepair</a></p>
+        <p><a href="#eligibility">Check Eligibility</a></p>
+        <p><a href="#testimonials">Testimonials</a></p>
+        <p><a href="#claim">Start Your Claim</a></p>
+      </div>
+
+      <div>
+        <h3 style="font-size:22px">Contact Us</h3>
+        <p><a href="mailto:info@hdrsupportline.co.uk">info@hdrsupportline.co.uk</a></p>
+        <p><a href="tel:+442038833227">020 3883 3227</a></p>
+        <p>187 York Way, London N7 9AT</p>
+      </div>
+    </div>
+
+    <p style="margin-top:24px;opacity:.85">© <span id="year"></span> Housing Disrepair Support Line. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- Floating WhatsApp -->
+<a class="wa-float"
+   href="https://wa.me/447949489006?text=Hi%20Housing%20Disrepair%20Support%20Line%2C%20I%20need%20help%20with%20my%20housing%20disrepair."
+   target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M20 11a8 8 0 0 1-12.7 6.4L4 18l.7-3.1A8 8 0 1 1 20 11Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M9 10c1 3 3 5 6 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+</a>
+
+<script>
+  // menu
+  const drawer = document.getElementById('drawer');
+  document.getElementById('menuBtn').addEventListener('click', () => drawer.classList.add('open'));
+  document.getElementById('closeDrawer').addEventListener('click', () => drawer.classList.remove('open'));
+  drawer.addEventListener('click', (e) => { if(e.target === drawer) drawer.classList.remove('open'); });
+
+  // year
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
